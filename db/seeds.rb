@@ -15,8 +15,8 @@ exported_search_files.each_with_index do |exported_search_file, search_index|
   # Save Search #
   ###############
 
-  # give this search a unique id
-  search_id = search_index
+  # give this search a unique id (add 1 so @search.id == @search.search_id)
+  search_id = search_index + 1
 
   # extract the search phrase from the file name
   search_phrase = exported_search_file.split("/")[-1].gsub(/.ris/, '').split("_").join(" ")
