@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  search_id: 1
+  result_title: MyString
+  result_journal: MyString
+  result_publication_year: MyString
+  result_start_page: MyString
+  result_end_page: MyString
+  result_authors: MyString
+
+two:
+  search_id: 1
+  result_title: MyString
+  result_journal: MyString
+  result_publication_year: MyString
+  result_start_page: MyString
+  result_end_page: MyString
+  result_authors: MyString

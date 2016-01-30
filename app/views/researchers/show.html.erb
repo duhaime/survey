@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @researcher.email %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @researcher.name %>
+</p>
+
+<p>
+  <strong>University:</strong>
+  <%= @researcher.university %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @researcher.position %>
+</p>
+
+<p>
+  <strong>Search group:</strong>
+  <%= @researcher.search_group_id %>
+</p>
+
+<%= link_to 'Edit', edit_researcher_path(@researcher) %> |
+<%= link_to 'Back', researchers_path %>
