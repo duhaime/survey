@@ -20,7 +20,7 @@
                   <b><%= sr.result_title %></b>
                     <br>
                     <div class="search-result-metadata">
-                      <% if defined? sr.result_authors %>
+                      <% if sr.result_authors.length >= 1 %>
                         <%= sr.result_authors %>:
                       <% end %>
                       
