@@ -27,8 +27,9 @@ class ResearchersController < ApplicationController
     @researcher = Researcher.new(researcher_params)
 
     respond_to do |format|
+
       if @researcher.save
-        format.html { redirect_to @researcher, notice: 'Researcher was successfully created.' }
+        format.html { redirect_to search_url(1), action: show, notice: 'Researcher was successfully created.', status: 301}
         format.json { render action: 'show', status: :created, location: @researcher }
       else
         format.html { render action: 'new' }
