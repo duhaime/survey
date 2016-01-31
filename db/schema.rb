@@ -11,7 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160130191240) do
+ActiveRecord::Schema.define(version: 20160131230903) do
+
+  create_table "researcher_rankings", force: true do |t|
+    t.integer  "search_id"
+    t.integer  "researcher_id"
+    t.integer  "result_one"
+    t.integer  "result_two"
+    t.integer  "result_three"
+    t.integer  "result_four"
+    t.integer  "result_five"
+    t.integer  "result_six"
+    t.integer  "result_seven"
+    t.integer  "result_eight"
+    t.integer  "result_nine"
+    t.integer  "result_ten"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "researchers", force: true do |t|
     t.string   "email"
