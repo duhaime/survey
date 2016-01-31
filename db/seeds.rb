@@ -19,7 +19,8 @@ exported_search_files.each_with_index do |exported_search_file, search_index|
   search_id = search_index + 1
 
   # extract the search phrase from the file name
-  search_phrase = exported_search_file.split("/")[-1].gsub(/.ris/, '').split("_").join(" ")
+  split_file_path = exported_search_file.split("/")[-1].gsub(/.ris/, '').split("_")
+  search_phrase = split_file_path[1..split_file_path.length].join(" ")
 
   # save the search information
   new_search = Search.new(
@@ -28,6 +29,23 @@ exported_search_files.each_with_index do |exported_search_file, search_index|
   )
 
   new_search.save!
+
+  ####################
+  # Save SearchGroup #
+  ####################
+
+  # the results of each search are assigned to a 
+  # search group by their file path: 1_toyota_pepsi.ris 
+  # assigns the search for "toyota pepsi" to search group 1
+  # Extract the search group for the current search file
+  search_group_id = split_file_path[0]
+
+  new_search_group_record = SearchGroup.new(
+    :search_group_id => search_group_id,
+    :search_id => search_id
+  )
+
+  new_search_group_record.save!
 
   #####################
   # Save SearchResult #
