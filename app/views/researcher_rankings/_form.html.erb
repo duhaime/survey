@@ -1,0 +1,65 @@
+<%= form_for(@researcher_ranking) do |f| %>
+  <% if @researcher_ranking.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@researcher_ranking.errors.count, "error") %> prohibited this researcher_ranking from being saved:</h2>
+
+      <ul>
+      <% @researcher_ranking.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :search_id %><br>
+    <%= f.number_field :search_id %>
+  </div>
+  <div class="field">
+    <%= f.label :researcher_id %><br>
+    <%= f.number_field :researcher_id %>
+  </div>
+  <div class="field">
+    <%= f.label :result_one %><br>
+    <%= f.number_field :result_one %>
+  </div>
+  <div class="field">
+    <%= f.label :result_two %><br>
+    <%= f.number_field :result_two %>
+  </div>
+  <div class="field">
+    <%= f.label :result_three %><br>
+    <%= f.number_field :result_three %>
+  </div>
+  <div class="field">
+    <%= f.label :result_four %><br>
+    <%= f.number_field :result_four %>
+  </div>
+  <div class="field">
+    <%= f.label :result_five %><br>
+    <%= f.number_field :result_five %>
+  </div>
+  <div class="field">
+    <%= f.label :result_six %><br>
+    <%= f.number_field :result_six %>
+  </div>
+  <div class="field">
+    <%= f.label :result_seven %><br>
+    <%= f.number_field :result_seven %>
+  </div>
+  <div class="field">
+    <%= f.label :result_eight %><br>
+    <%= f.number_field :result_eight %>
+  </div>
+  <div class="field">
+    <%= f.label :result_nine %><br>
+    <%= f.number_field :result_nine %>
+  </div>
+  <div class="field">
+    <%= f.label :result_ten %><br>
+    <%= f.number_field :result_ten %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

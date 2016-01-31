@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  search_id: 1
+  researcher_id: 1
+  result_one: 1
+  result_two: 1
+  result_three: 1
+  result_four: 1
+  result_five: 1
+  result_six: 1
+  result_seven: 1
+  result_eight: 1
+  result_nine: 1
+  result_ten: 1
+
+two:
+  search_id: 1
+  researcher_id: 1
+  result_one: 1
+  result_two: 1
+  result_three: 1
+  result_four: 1
+  result_five: 1
+  result_six: 1
+  result_seven: 1
+  result_eight: 1
+  result_nine: 1
+  result_ten: 1
