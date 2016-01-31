@@ -4,22 +4,55 @@
 
       <div class="search-results">
         <p id="notice"><%= notice %></p>
-        <p>
-        	<strong>Search phrase:</strong>
-        	<%= @search.search_phrase %>
-        </p>
-        <!-- Retrieve all search results for the search -->
-        <% @search_results.each do |sr| %>
-          <p>
-          	<%= sr.id %>
-          	<%= sr.search_id %>
-          	<%= sr.result_title %>
-          </p>
-        <% end %>
-        <p>
-        	<strong>Search:</strong>
-        	<%= @search.search_id %>
-        </p>
+        <fieldset>
+          <legend>Query: 
+            <%= @search.search_phrase %>
+          </legend>
+          <p>Please select the results that are relevant for the query above:</p>
+          <ul>
+
+
+            <!-- Retrieve all search results for the search -->
+            <% @search_results.each do |sr| %>
+              <div class="search-result-record">  
+                <input type="checkbox" class="search-result-checkbox">
+                <div class="search-result">
+                  <b><%= sr.result_title %></b>
+                    <br>
+                    <div class="search-result-metadata">
+                      <% if defined? sr.result_authors %>
+                        <%= sr.result_authors %>:
+                      <% end %>
+                      
+                      <i><%= sr.result_journal %></i>,
+
+                      <%= sr.result_publication_year %>
+
+                      <% if sr.result_start_page.length >= 1 %>
+                        <%= sr.result_start_page %>-
+
+                        <% if sr.result_end_page.length >= 1 %>
+                          <%= sr.result_end_page %>
+                        <% else %>
+                          <%= sr.result_start_page %>
+                        <% end %>
+
+                      <% elsif sr.result_end_page.length >= 1 %>
+                        <%= sr.result_end_page %>-<%= sr.result_end_page %>
+                      <% end %>
+                    </div>
+
+                  
+                </div>
+              </div>
+              <br>
+            <% end %>
+
+
+
+
+          </ul>
+        </fieldset>
       </div>
     </div>
   </div>
