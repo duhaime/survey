@@ -1,5 +1,10 @@
 RailsSurveyApp::Application.routes.draw do
 
+  resources :researcher_rankings
+
+  get "researcher_rankings/create"
+  get "researcher_rankings/new"
+  get "researcher_rankings/show"
   resources :searches
   resources :researchers
 
