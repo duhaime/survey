@@ -1,8 +1,6 @@
 RailsSurveyApp::Application.routes.draw do
 
-  get "home/show"
   resources :searches
-
   resources :researchers
 
   root 'home#show'
