@@ -6,11 +6,13 @@
 .btn-lg {
   background: #FF8670;
   border-color: #ffffff;
+  outline: 0 none;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
     background: #FF9785;
     border-color: #ffffff;
+    outline: 0 none;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary.focus, 
@@ -19,6 +21,7 @@
   background: #FF9785;
   border-color: #ffffff;
   box-shadow: none;
+  outline: 0 none;
 }
 
 /* OVERALL ASPECT */
