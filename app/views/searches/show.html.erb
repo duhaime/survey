@@ -1,21 +1,23 @@
-<p id="notice"><%= notice %></p>
+<div class="search-results">
+	<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Search phrase:</strong>
-  <%= @search.search_phrase %>
-</p>
-  
-<!-- Retrieve all search results for the search -->
-<% @search_results.each do |sr| %>
-  <p>
-    <%= sr.id %>
-    <%= sr.search_id %>
-    <%= sr.result_title %>
-  </p>
-<% end %>
+	<p>
+	  <strong>Search phrase:</strong>
+	  <%= @search.search_phrase %>
+	</p>
+	  
+	<!-- Retrieve all search results for the search -->
+	<% @search_results.each do |sr| %>
+	  <p>
+	    <%= sr.id %>
+	    <%= sr.search_id %>
+	    <%= sr.result_title %>
+	  </p>
+	<% end %>
 
 
-<p>
-  <strong>Search:</strong>
-  <%= @search.search_id %>
-</p>
+	<p>
+	  <strong>Search:</strong>
+	  <%= @search.search_id %>
+	</p>
+</div>
