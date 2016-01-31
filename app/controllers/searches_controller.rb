@@ -10,7 +10,7 @@ class SearchesController < ApplicationController
   # GET /searches/1
   # GET /searches/1.json
   def show
-    @search_results = SearchResult.where(:search_id == @search.search_id)
+    @search_results = SearchResult.where(search_id: @search.search_id)
   end
 
   # GET /searches/new
