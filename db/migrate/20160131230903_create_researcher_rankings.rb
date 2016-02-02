@@ -3,16 +3,16 @@ class CreateResearcherRankings < ActiveRecord::Migration
     create_table :researcher_rankings do |t|
       t.boolean :search_id
       t.boolean :researcher_id
-      t.boolean :result_one
-      t.boolean :result_two
-      t.boolean :result_three
-      t.boolean :result_four
-      t.boolean :result_five
-      t.boolean :result_six
-      t.boolean :result_seven
-      t.boolean :result_eight
-      t.boolean :result_nine
-      t.boolean :result_ten
+      t.boolean :result_1
+      t.boolean :result_2
+      t.boolean :result_3
+      t.boolean :result_4
+      t.boolean :result_5
+      t.boolean :result_6
+      t.boolean :result_7
+      t.boolean :result_8
+      t.boolean :result_9
+      t.boolean :result_10
 
       t.timestamps
     end
