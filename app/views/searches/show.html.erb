@@ -11,7 +11,6 @@
           <p>Please select the results that are relevant for the query above:</p>
           <ul>
 
-
             <!-- Retrieve all search results for the search -->
             <% @search_results.each do |sr| %>
               <div class="search-result-record">  
@@ -48,7 +47,7 @@
               <br>
             <% end %>
 
-
+            <%= button_to "Submit", researcher_rankings_path, :class => "btn btn-primary", :method => :post  %>
 
 
           </ul>
