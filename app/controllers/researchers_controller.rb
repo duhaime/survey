@@ -29,7 +29,7 @@ class ResearchersController < ApplicationController
     respond_to do |format|
 
       if @researcher.save
-        format.html { redirect_to search_url( retrieve_initial_search(@researcher), :researcher_id => @researcher.id, :question_index => 1), action: show, notice: 'Researcher was successfully created.', status: 301}
+        format.html { redirect_to new_researcher_ranking_path(:researcher_id => @researcher.id, :search_id => retrieve_initial_search(@researcher)), action: show, notice: 'Success! Your information has been saved.', status: 301 }
         format.json { render action: 'show', status: :created, location: @researcher }
       else
         format.html { render action: 'new' }
