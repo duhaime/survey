@@ -1,3 +1,42 @@
 // Place all the styles related to the ResearcherRankings controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,300,700,900);
+
+.researcher-ranking {
+  margin-top: 5%;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.search-result-metadata {
+  font-size: 12px;
+}
+
+#submit-button {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.search-result-record {
+  font-family: "Raleway" !important;
+}
+
+.search-result-checkbox {
+  display: inline;
+}
+
+.search-result-checkbox {
+  float: left !important;
+  clear: left !important;
+}
+
+.search-result {
+  display: block; 
+  overflow: hidden;
+  padding-left: 8px;
+}
