@@ -15,6 +15,12 @@ class ResearcherRankingsController < ApplicationController
   # GET /researcher_rankings/new
   def new
     @researcher_ranking = ResearcherRanking.new
+    
+    # Setting the search id feld here allows the view access to 
+    # this instance variable
+    @search_id = params[:search_id]
+    @researcher_id = params[:researcher_id]
+    @search_results = SearchResult.where(search_id: @search_id)
   end
 
   # GET /researcher_rankings/1/edit
@@ -69,6 +75,6 @@ class ResearcherRankingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def researcher_ranking_params
-      params.require(:researcher_ranking).permit(:search_id, :researcher_id, :result_one, :result_two, :result_three, :result_four, :result_five, :result_six, :result_seven, :result_eight, :result_nine, :result_ten)
+      params.require(:researcher_ranking).permit(:search_id, :researcher_id, :result_1, :result_2, :result_3, :result_4, :result_5, :result_6, :result_7, :result_8, :result_9, :result_10)
     end
 end
