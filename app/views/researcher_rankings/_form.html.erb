@@ -11,6 +11,7 @@
     </div>
   <% end %>
 
+  <!-- Retrieve search id and researcher id from params
   <div class="field">
     <%= f.label :search_id %><br>
     <%= f.number_field :search_id %>
@@ -18,47 +19,44 @@
   <div class="field">
     <%= f.label :researcher_id %><br>
     <%= f.number_field :researcher_id %>
-  </div>
-  <div class="field">
-    <%= f.label :result_one %><br>
-    <%= f.number_field :result_one %>
-  </div>
-  <div class="field">
-    <%= f.label :result_two %><br>
-    <%= f.number_field :result_two %>
-  </div>
-  <div class="field">
-    <%= f.label :result_three %><br>
-    <%= f.number_field :result_three %>
-  </div>
-  <div class="field">
-    <%= f.label :result_four %><br>
-    <%= f.number_field :result_four %>
-  </div>
-  <div class="field">
-    <%= f.label :result_five %><br>
-    <%= f.number_field :result_five %>
-  </div>
-  <div class="field">
-    <%= f.label :result_six %><br>
-    <%= f.number_field :result_six %>
-  </div>
-  <div class="field">
-    <%= f.label :result_seven %><br>
-    <%= f.number_field :result_seven %>
-  </div>
-  <div class="field">
-    <%= f.label :result_eight %><br>
-    <%= f.number_field :result_eight %>
-  </div>
-  <div class="field">
-    <%= f.label :result_nine %><br>
-    <%= f.number_field :result_nine %>
-  </div>
-  <div class="field">
-    <%= f.label :result_ten %><br>
-    <%= f.number_field :result_ten %>
-  </div>
+  </div> -->
+
+  <!-- Retrieve all search results for the search -->
+  <% @search_results.each_with_index do |sr, sr_index| %>
+    <% current_key = "result_" + (sr_index + 1).to_s %>
+      <div class="search-result-record">  
+        <%= f.check_box current_key.parameterize.underscore.to_sym %>
+
+        <div class="search-result">
+          <b><%= sr.result_title %></b>
+          <br>
+          <div class="search-result-metadata">
+            <% if sr.result_authors.length >= 1 %>
+              <%= sr.result_authors %>:
+            <% end %>
+            
+            <i><%= sr.result_journal %></i>,
+
+            <%= sr.result_publication_year %>
+
+            <% if sr.result_start_page.length >= 1 %>
+              <%= sr.result_start_page %>-
+
+              <% if sr.result_end_page.length >= 1 %>
+                <%= sr.result_end_page %>
+              <% else %>
+                <%= sr.result_start_page %>
+              <% end %>
+
+            <% elsif sr.result_end_page.length >= 1 %>
+              <%= sr.result_end_page %>-<%= sr.result_end_page %>
+            <% end %>
+          </div>        
+        </div>
+      </div>
+    <br>
+  <% end %>
+
   <div class="actions">
     <%= f.submit %>
   </div>
