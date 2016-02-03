@@ -1,5 +1,6 @@
 RailsSurveyApp::Application.routes.draw do
 
+  get "survey_completed/show"
   resources :researcher_rankings
 
   get "researcher_rankings/create"
