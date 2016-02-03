@@ -6,32 +6,31 @@
   <%= javascript_include_tag 'bootstrap.min' %>
 <% end -%>
 
-<div id="headerwrap">
-  <div class="container">
-    <div class="row centered">
-      <div class="col-lg-8 col-lg-offset-2">
-      <h1></h1>
-      <h1>SEARCH <b>SURVEY</b></h1>
-      <br><br><br><br><br>
+<div id="homepage">
+  <div id="headerwrap">
+    <div class="container">
+      <div class="row centered">
+        <div class="col-lg-8 col-lg-offset-2">
+        <h1></h1>
+        <h1>SEARCH SURVEY</h1>
+        <br><br><br>
+        <h3><b>Welcome to our search survey!</b><h3>
+        <h3><b>Please click the button below to begin.</b><h3>
+        <br><br>
 
-      <%= button_to "Begin", new_researcher_path, :class => "btn-lg btn-primary", :method => :get  %>
+        <%= button_to "Begin", new_researcher_path, :class => "btn-lg btn-primary", :method => :get  %>
 
-      </div>
-    </div><!-- row -->
-  </div><!-- container -->
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
+        </div>
+      </div><!-- row -->
+    </div><!-- container -->
+  </div>
 </div>
-
-<div class="container w">
-  <div class="row centered">
-    <br>
-    <div class="col-lg-12">
-      <i class="fa fa-home"></i>
-      <h4>WELCOME</h4>
-      <p>Welcome to our survey! To get started, please click the "Begin" button above.</p>
-    </div><!-- col-lg-4 -->
-
-  </div><!-- row -->
-  <br>
-  <br>
-</div><!-- container -->
-
