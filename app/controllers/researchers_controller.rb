@@ -83,7 +83,7 @@ class ResearchersController < ApplicationController
       relevant_searches = SearchGroup.where(search_group_id: researcher_search_group_id)
 
       # of those searches retrieve the first, and return its search id
-      first_relevant_search = relevant_searches.first
+      first_relevant_search = relevant_searches[0]
 
       return first_relevant_search.search_id
     end  
