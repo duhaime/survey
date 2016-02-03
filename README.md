@@ -4,11 +4,9 @@ This repository contains source code for creating a web app that allows users to
 
 ###Quickstart
 
-<pre><code>
-git clone https://github.com/duhaime/survey  
+<pre><code>git clone https://github.com/duhaime/survey  
 cd survey  
-rails server  
-</code></pre>
+rails server</code></pre>
 
 If you navigate to localhost:3000, you should see the home page of the app.
 
