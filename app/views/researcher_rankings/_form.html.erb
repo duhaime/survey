@@ -1,63 +1,77 @@
-<%= form_for(@researcher_ranking) do |f| %>
-  <% if @researcher_ranking.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@researcher_ranking.errors.count, "error") %> prohibited this researcher_ranking from being saved:</h2>
+<fieldset>
+  <legend>Query: 
+    <%= @search_phrase %>
+  </legend>
+  <p>Please select the results that are relevant for the query above:</p>
+  <ul>
 
-      <ul>
-      <% @researcher_ranking.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <%= form_for(@researcher_ranking) do |f| %>
+      <% if @researcher_ranking.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@researcher_ranking.errors.count, "error") %> prohibited this researcher_ranking from being saved:</h2>
 
-  <!-- Retrieve search id and researcher id from params
-  <div class="field">
-    <%= f.label :search_id %><br>
-    <%= f.number_field :search_id %>
-  </div>
-  <div class="field">
-    <%= f.label :researcher_id %><br>
-    <%= f.number_field :researcher_id %>
-  </div> -->
-
-  <!-- Retrieve all search results for the search -->
-  <% @search_results.each_with_index do |sr, sr_index| %>
-    <% current_key = "result_" + (sr_index + 1).to_s %>
-      <div class="search-result-record">  
-        <%= f.check_box current_key.parameterize.underscore.to_sym %>
-
-        <div class="search-result">
-          <b><%= sr.result_title %></b>
-          <br>
-          <div class="search-result-metadata">
-            <% if sr.result_authors.length >= 1 %>
-              <%= sr.result_authors %>:
-            <% end %>
-            
-            <i><%= sr.result_journal %></i>,
-
-            <%= sr.result_publication_year %>
-
-            <% if sr.result_start_page.length >= 1 %>
-              <%= sr.result_start_page %>-
-
-              <% if sr.result_end_page.length >= 1 %>
-                <%= sr.result_end_page %>
-              <% else %>
-                <%= sr.result_start_page %>
-              <% end %>
-
-            <% elsif sr.result_end_page.length >= 1 %>
-              <%= sr.result_end_page %>-<%= sr.result_end_page %>
-            <% end %>
-          </div>        
+          <ul>
+          <% @researcher_ranking.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
         </div>
-      </div>
-    <br>
-  <% end %>
+      <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+      <!-- Retrieve search id and researcher id from params and pass into the returned params
+
+      <div class="field">
+        <%= f.label :search_id %><br>
+        <%= f.number_field :search_id %>
+      </div>
+      <div class="field">
+        <%= f.label :researcher_id %><br>
+        <%= f.number_field :researcher_id %>
+      </div> -->
+
+      <%= f.number_field :search_id, :value => @search_id, :class => 'hidden' %>
+      <%= f.number_field :researcher_id, :value => @researcher_id, :class => 'hidden' %>
+
+      <!-- Retrieve all search results for the search -->
+      <% @search_results.each_with_index do |sr, sr_index| %>
+        <% current_key = "result_" + (sr_index + 1).to_s %>
+          <div class="search-result-record">  
+            <%= f.check_box current_key.parameterize.underscore.to_sym, :class => "search-result-checkbox" %>
+
+            <div class="search-result">
+              <b><%= sr.result_title %></b>
+              <br>
+              <div class="search-result-metadata">
+                <% if sr.result_authors.length >= 1 %>
+                  <%= sr.result_authors %>:
+                <% end %>
+                
+                <i><%= sr.result_journal %></i>,
+
+                <%= sr.result_publication_year %>:
+
+                <% if sr.result_start_page.length >= 1 %>
+                  <%= sr.result_start_page %>-
+
+                  <% if sr.result_end_page.length >= 1 %>
+                    <%= sr.result_end_page %>
+                  <% else %>
+                    <%= sr.result_start_page %>
+                  <% end %>
+
+                <% elsif sr.result_end_page.length >= 1 %>
+                  <%= sr.result_end_page %>-<%= sr.result_end_page %>
+                <% end %>
+              </div>        
+            </div>
+          </div>
+        <br>
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit "Submit Responses" %>
+      </div>
+    <% end %>
+
+  </ul>
+</fieldset>
