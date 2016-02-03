@@ -14,8 +14,8 @@
 ActiveRecord::Schema.define(version: 20160131230903) do
 
   create_table "researcher_rankings", force: true do |t|
-    t.boolean  "search_id"
-    t.boolean  "researcher_id"
+    t.integer  "search_id"
+    t.integer  "researcher_id"
     t.boolean  "result_1"
     t.boolean  "result_2"
     t.boolean  "result_3"
