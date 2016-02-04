@@ -39,7 +39,7 @@ class ResearcherRankingsController < ApplicationController
 
         # on successful submission of form, check to see if the
         # researcher has responded to all queries in their
-        # search_group_id. If so, send the to a congratulations page
+        # search_group_id. If so, send the user to a congratulations page
         if survey_completed(@researcher_id, @search_id)
           format.html { redirect_to :controller => 'survey_completed', :action => 'show' }
         else
@@ -98,7 +98,6 @@ class ResearcherRankingsController < ApplicationController
     end
 
     def find_next_search_result(researcher_id_instance, search_id_instance)
-      puts researcher_id_instance
       researcher_search_group_id = Researcher.where(id: researcher_id_instance)[0].search_group_id
 
       # retrieve all searches for the given search_group_id
@@ -126,7 +125,7 @@ class ResearcherRankingsController < ApplicationController
     def survey_completed(researcher_id_instance, search_id_instance)
       # to determine if researcher is done, retrieve their 
       # search group id, then retrieve 
-      researcher_search_group_id = Researcher.where(id: researcher_id_instance)[0].search_group_id
+      researcher_search_group_id = Researcher.find_by(id: researcher_id_instance).search_group_id
       relevant_searches = SearchGroup.where(search_group_id: researcher_search_group_id)
       last_relevant_search_id = relevant_searches.last.search_id
       
