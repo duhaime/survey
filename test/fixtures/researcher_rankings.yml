@@ -3,27 +3,27 @@
 one:
   search_id: 1
   researcher_id: 1
-  result_one: 1
-  result_two: 1
-  result_three: 1
-  result_four: 1
-  result_five: 1
-  result_six: 1
-  result_seven: 1
-  result_eight: 1
-  result_nine: 1
-  result_ten: 1
+  result_1: 1
+  result_2: 1
+  result_3: 1
+  result_4: 1
+  result_5: 1
+  result_6: 1
+  result_7: 1
+  result_8: 1
+  result_9: 1
+  result_10: 1
 
 two:
   search_id: 1
   researcher_id: 1
-  result_one: 1
-  result_two: 1
-  result_three: 1
-  result_four: 1
-  result_five: 1
-  result_six: 1
-  result_seven: 1
-  result_eight: 1
-  result_nine: 1
-  result_ten: 1
+  result_1: 1
+  result_2: 1
+  result_3: 1
+  result_4: 1
+  result_5: 1
+  result_6: 1
+  result_7: 1
+  result_8: 1
+  result_9: 1
+  result_10: 1
