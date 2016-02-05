@@ -1,5 +1,5 @@
 class ResearcherRankingsController < ApplicationController
-  before_action :set_researcher_ranking, only: [:show, :edit, :update, :destroy]
+  before_action :set_researcher_ranking, only: [:show]
 
   # GET /researcher_rankings
   # GET /researcher_rankings.json
@@ -23,10 +23,6 @@ class ResearcherRankingsController < ApplicationController
     @search_phrase = retrieve_search_phrase(@search_id)
   end
 
-  # GET /researcher_rankings/1/edit
-  def edit
-  end
-
   # POST /researcher_rankings
   # POST /researcher_rankings.json
   def create
@@ -36,7 +32,6 @@ class ResearcherRankingsController < ApplicationController
 
     respond_to do |format|
       if @researcher_ranking.save
-
         # on successful submission of form, check to see if the
         # researcher has responded to all queries in their
         # search_group_id. If so, send the user to a congratulations page
@@ -51,30 +46,6 @@ class ResearcherRankingsController < ApplicationController
         format.html { render action: 'new' }
         format.json { render json: @researcher_ranking.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH/PUT /researcher_rankings/1
-  # PATCH/PUT /researcher_rankings/1.json
-  def update
-    respond_to do |format|
-      if @researcher_ranking.update(researcher_ranking_params)
-        format.html { redirect_to @researcher_ranking, notice: 'Researcher ranking was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @researcher_ranking.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /researcher_rankings/1
-  # DELETE /researcher_rankings/1.json
-  def destroy
-    @researcher_ranking.destroy
-    respond_to do |format|
-      format.html { redirect_to researcher_rankings_url }
-      format.json { head :no_content }
     end
   end
 

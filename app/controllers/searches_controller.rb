@@ -1,5 +1,5 @@
 class SearchesController < ApplicationController
-  before_action :set_search, only: [:show, :edit, :update, :destroy]
+  before_action :set_search, only: [:show]
 
   # GET /searches
   # GET /searches.json
@@ -18,10 +18,6 @@ class SearchesController < ApplicationController
     @search = Search.new
   end
 
-  # GET /searches/1/edit
-  def edit
-  end
-
   # POST /searches
   # POST /searches.json
   def create
@@ -35,30 +31,6 @@ class SearchesController < ApplicationController
         format.html { render action: 'new' }
         format.json { render json: @search.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH/PUT /searches/1
-  # PATCH/PUT /searches/1.json
-  def update
-    respond_to do |format|
-      if @search.update(search_params)
-        format.html { redirect_to @search, notice: 'Search was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @search.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /searches/1
-  # DELETE /searches/1.json
-  def destroy
-    @search.destroy
-    respond_to do |format|
-      format.html { redirect_to searches_url }
-      format.json { head :no_content }
     end
   end
 

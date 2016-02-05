@@ -1,5 +1,5 @@
 class ResearchersController < ApplicationController
-  before_action :set_researcher, only: [:show, :edit, :update, :destroy]
+  before_action :set_researcher, only: [:show]
 
   # GET /researchers
   # GET /researchers.json
@@ -17,10 +17,6 @@ class ResearchersController < ApplicationController
     @researcher = Researcher.new
   end
 
-  # GET /researchers/1/edit
-  def edit
-  end
-
   # POST /researchers
   # POST /researchers.json
   def create
@@ -35,30 +31,6 @@ class ResearchersController < ApplicationController
         format.html { render action: 'new' }
         format.json { render json: @researcher.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH/PUT /researchers/1
-  # PATCH/PUT /researchers/1.json
-  def update
-    respond_to do |format|
-      if @researcher.update(researcher_params)
-        format.html { redirect_to @researcher, notice: 'Researcher was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @researcher.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /researchers/1
-  # DELETE /researchers/1.json
-  def destroy
-    @researcher.destroy
-    respond_to do |format|
-      format.html { redirect_to researchers_url }
-      format.json { head :no_content }
     end
   end
 
