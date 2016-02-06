@@ -35,6 +35,9 @@ end
 # add Font Awesome gem
 gem 'font-awesome-rails'
 
+# add d3.js gem
+gem 'd3-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
