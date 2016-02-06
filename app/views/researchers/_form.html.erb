@@ -1,7 +1,7 @@
 <%= form_for(@researcher) do |f| %>
   <% if @researcher.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@researcher.errors.count, "error") %> prohibited this researcher from being saved:</h2>
+      <h2><%= pluralize(@researcher.errors.count, "error") %> prohibited your information from being saved:</h2>
 
       <ul>
       <% @researcher.errors.full_messages.each do |msg| %>
@@ -33,6 +33,7 @@
     <%= f.number_field :search_group_id %>
   </div>
   -->
+  <br>
   <div class="actions">
     <%= f.submit "Begin Survey" %>
   </div>
