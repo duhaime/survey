@@ -43,6 +43,10 @@ div {
   padding: 2px;
   background-color: #FF8670;
   display: table;
+
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+  }
 }
 
 #error_explanation {
