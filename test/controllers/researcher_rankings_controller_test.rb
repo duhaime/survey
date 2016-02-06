@@ -3,8 +3,8 @@ require 'test_helper'
 class ResearcherRankingsControllerTest < ActionController::TestCase
   setup do
     @researcher_ranking = researcher_rankings(:one)
-    @search_id = 1
-    @researcher_id = 1
+    @search = searches(:one)
+    @researcher = researchers(:one)
   end
 
   test "should get index" do
