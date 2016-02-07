@@ -1,9 +1,10 @@
 <!-- append view assets to head -->
 <% content_for :header do -%>
   <%= stylesheet_link_tag 'bootstrap.min' %>
-  <%= stylesheet_link_tag 'home' %>
-  <%= javascript_include_tag 'typeahead' %>
   <%= javascript_include_tag 'bootstrap.min' %>
+  <%= stylesheet_link_tag 'home' %>
+  <%= stylesheet_link_tag 'scaffolds' %>
+  <%= stylesheet_link_tag 'black-background' %>
 <% end -%>
 
 <div id="homepage">
@@ -19,15 +20,6 @@
         <br><br>
 
         <%= button_to "Begin", new_researcher_path, :class => "btn-lg btn-primary", :method => :get  %>
-
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
 
         </div>
       </div><!-- row -->

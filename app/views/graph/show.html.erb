@@ -1,4 +1,7 @@
-<%= javascript_include_tag "graph" %>
+<% content_for :header do -%>
+  <%= javascript_include_tag "graph" %>
+  <%= stylesheet_include_tag "graph" %>
+<% end %>
 
 <div class="container">
   <div class="row">
