@@ -1,4 +1,11 @@
-<%= javascript_include_tag "graph" %>
+<% content_for :header do -%>
+  <%= stylesheet_link_tag 'bootstrap.min' %>
+  <%= javascript_include_tag 'bootstrap.min' %>
+  <%= stylesheet_link_tag 'home' %>
+  <%= stylesheet_link_tag 'scaffolds' %>
+  <%= javascript_include_tag 'graph' %>
+  <%= stylesheet_link_tag 'graph' %>
+<% end %>
 
 <div class="container">
   <div class="row">
