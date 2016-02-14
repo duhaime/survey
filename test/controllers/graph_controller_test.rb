@@ -7,7 +7,7 @@ class GraphControllerTest < ActionController::TestCase
   end
 
   test "should get data" do
-    get :data
+    get :data, format: :json
     assert_response :success
   end
 
