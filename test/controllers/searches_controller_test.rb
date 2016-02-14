@@ -29,21 +29,4 @@ class SearchesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get edit" do
-    get :edit, id: @search
-    assert_response :success
-  end
-
-  test "should update search" do
-    patch :update, id: @search, search: { search_id: @search.search_id, search_phrase: @search.search_phrase }
-    assert_redirected_to search_path(assigns(:search))
-  end
-
-  test "should destroy search" do
-    assert_difference('Search.count', -1) do
-      delete :destroy, id: @search
-    end
-
-    assert_redirected_to searches_path
-  end
 end
