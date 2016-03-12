@@ -46,16 +46,10 @@ class GraphController < ApplicationController
         end
       end
 
-
-      print result_keys
-
-
       # given the non-nil keys for the current search, compute the number
       # of true and false responses for each search response for the search
       relevant_searches = ResearcherRanking.where(search_id: search_id)
       result_keys.each do |result_key|
-
-        puts result_key
 
         n_true = relevant_searches.where(result_key.parameterize.underscore.to_sym => true).length
         n_false = relevant_searches.where(result_key.parameterize.underscore.to_sym => false).length
