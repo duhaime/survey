@@ -18,19 +18,11 @@
         </div>
       <% end %>
 
-      <!-- Retrieve search id and researcher id from params and pass into the returned params
-
-      <div class="field">
-        <%= f.label :search_id %><br>
-        <%= f.number_field :search_id %>
-      </div>
-      <div class="field">
-        <%= f.label :researcher_id %><br>
-        <%= f.number_field :researcher_id %>
-      </div> -->
-
+      <!-- catch the following values from the get params and send with the post -->
+      <%= f.text_field :researcher_email, :value => @researcher_email, :class => 'hidden' %>
       <%= f.number_field :search_id, :value => @search_id, :class => 'hidden' %>
-      <%= f.number_field :researcher_id, :value => @researcher_id, :class => 'hidden' %>
+      <%= f.number_field :platform_id, :value => @platform_id, :class => 'hidden' %>
+      <%= f.number_field :search_number, :value => @search_number, :class => 'hidden' %>
 
       <!-- Retrieve all search results for the search -->
       <% @search_results.each_with_index do |sr, sr_index| %>
@@ -39,29 +31,10 @@
             <%= f.check_box current_key.parameterize.underscore.to_sym, :class => "search-result-checkbox" %>
 
             <div class="search-result">
-              <b><%= sr.result_title %></b>
+              <b><%= sr.search_result_title.html_safe %></b>
               <br>
               <div class="search-result-metadata">
-                <% if sr.result_authors.length >= 1 %>
-                  <%= sr.result_authors %>:
-                <% end %>
-                
-                <i><%= sr.result_journal %></i>,
-
-                <%= sr.result_publication_year %>:
-
-                <% if sr.result_start_page.length >= 1 %>
-                  <%= sr.result_start_page %>-
-
-                  <% if sr.result_end_page.length >= 1 %>
-                    <%= sr.result_end_page %>
-                  <% else %>
-                    <%= sr.result_start_page %>
-                  <% end %>
-
-                <% elsif sr.result_end_page.length >= 1 %>
-                  <%= sr.result_end_page %>-<%= sr.result_end_page %>
-                <% end %>
+                <%= sr.search_result_metadata.html_safe %>
               </div>        
             </div>
           </div>

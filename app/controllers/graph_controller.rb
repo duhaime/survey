@@ -13,6 +13,7 @@ class GraphController < ApplicationController
   end
 
   def retrieve_json()
+
     # Determine the percent of researchers who deem each response
     # to each query 'relevant', and return json that captures this
     # data
@@ -49,8 +50,9 @@ class GraphController < ApplicationController
       # of true and false responses for each search response for the search
       relevant_searches = ResearcherRanking.where(search_id: search_id)
       result_keys.each do |result_key|
-        n_true = relevant_searches.where("#{result_key}": true).length
-        n_false = relevant_searches.where("#{result_key}": false).length
+
+        n_true = relevant_searches.where(result_key.parameterize.underscore.to_sym => true).length
+        n_false = relevant_searches.where(result_key.parameterize.underscore.to_sym => false).length
         percent_true = n_true.fdiv(n_true + n_false)
 
         # add the result_key and percent_true to the appropriate search_id

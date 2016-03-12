@@ -5,115 +5,105 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+require 'json'
 
-exported_search_files = Dir.glob("db/exported_search_files/*.ris")
+search_results_files = Dir.glob("db/json_search_results/*.json")
 
-# assign each search a unique id based on its index
-exported_search_files.each_with_index do |exported_search_file, search_index|
+# assign each platform a unique id based on its index
+search_results_files.each_with_index do |search_results_file, platform_index|
   
-  ###############
-  # Save Search #
-  ###############
-
-  # give this search a unique id (add 1 so @search.id == @search.search_id)
-  search_id = search_index + 1
-
-  # extract the search phrase from the file name
-  split_file_path = exported_search_file.split("/")[-1].gsub(/.ris/, '').split("_")
-  search_phrase = split_file_path[1..split_file_path.length].join(" ")
-
-  # save the search information
-  new_search = Search.new(
-    :search_id => search_id,
-    :search_phrase => search_phrase
-  )
-
-  new_search.save!
-
   ####################
-  # Save SearchGroup #
+  # Extract Platform #
   ####################
 
-  # the results of each search are assigned to a 
-  # search group by their file path: 1_toyota_pepsi.ris 
-  # assigns the search for "toyota pepsi" to search group 1
-  # Extract the search group for the current search file
-  search_group_id = split_file_path[0]
+  # retrieve the platform that corresponds to the current file
+  platform_name = search_results_file.split("/")[-1].split("_")[0..1].join("_")
 
-  new_search_group_record = SearchGroup.new(
-    :search_group_id => search_group_id,
-    :search_id => search_id
+  # assign a unique id to the platform (add 1 so platform.id == platform.platform_id)
+  platform_id = platform_index
+
+  # save the platform
+  new_platform = Platform.new(
+    :platform_name => platform_name,
+    :platform_id => platform_id
   )
 
-  new_search_group_record.save!
+  new_platform.save!
 
-  #####################
-  # Save SearchResult #
-  #####################
 
-  # read the file with utf-8 encoding
-  exported_search = File.open(exported_search_file, 'r:UTF-8',&:read)
+  ####################
+  # Extract Searches #
+  ####################
 
-  # split record into a list of search results
-  search_results = exported_search.split("\r\n\r\n\r\n")[0..-2]
+  # read the file containing json 
+  read_file = File.read(search_results_file)
 
-  # assign each search result a unique id based on its index
-  search_results.each_with_index do |search_result, result_index|
+  # parse the json from the file
+  search_array = JSON.parse(read_file)
 
-    # initialize variables
-    authors = []
-    article_title = ''
-    journal = ''
-    row_content = ''
-    publication_year = ''
-    start_page = ''
-    end_page = ''
+  # iterate over the array of queries. Each member of this
+  # array is a dict with query and results keys
+  search_array.each_with_index do |search_dict, search_index|
+    search_phrase = search_dict["query"].split("+").join(" ")
 
-    # each query result has one or more rows that detail
-    # the result's author, title, etc. Iterate over those rows
-    search_result_rows = search_result.split("\r\n")
+    # give each search a unique id (add 1 so @search.id == @search.search_id)
+    search_id = search_index + 1
 
-    search_result_rows.each do |search_row|
-
-      # identify the row label and content
-      row_label = search_row[0..1]
-      row_content = search_row[6..search_row.length]
-
-      if row_label == "T1"
-        article_title = row_content
-
-      elsif row_label == "JF"
-        journal = row_content
-
-      elsif row_label == "PY"
-        publication_year = row_content
-
-      elsif row_label == "SP"
-        start_page = row_content
-
-      elsif row_label == "EP"
-        end_page = row_content
-
-      elsif row_label == "AU"
-        authors.append(row_content)
-      end
-    end
-
-  # join the author array into a string
-  authors = authors.join(", ")
-
-  # save the search result 
-  new_search_result = SearchResult.new(
-    :search_id => search_id,
-    :result_title => article_title,
-    :result_journal => journal,
-    :result_publication_year => publication_year,
-    :result_start_page => start_page,
-    :result_end_page => end_page,
-    :result_authors => authors
+    # save the search
+    new_search = Search.new(
+      :search_id => search_id,
+      :search_phrase => search_phrase,
+      :platform_id => platform_id
     )
 
-  new_search_result.save!
+    new_search.save!
+ 
 
+    ####################
+    # Save SearchGroup #
+    ####################
+
+    # Assign each search to a search group id. Each user will
+    # be assigned a search group id as well, and they will
+    # evaluate all of the search results for the searches in 
+    # their designated search group id.
+    search_group_id = 1
+
+    new_search_group_record = SearchGroup.new(
+      :search_group_id => search_group_id,
+      :search_id => search_id,
+      :platform_id => platform_id
+    )
+
+    new_search_group_record.save!
+
+
+    ###########################
+    # Save the Search Results #
+    ###########################
+
+    # search results is an array of arrays:
+    # [ 
+    #   [search_result_0_componont_0, search_result_0_component_1...], 
+    #   [search_result_1_component_0, search_result_1_component_1...]
+    # ]
+    search_results = search_dict["results"]
+
+    # iterate over the search results in the record and
+    # assign each search result a unique id based on its index
+    # nb: only retrieve the first 10 search results
+    search_results[0..9].each_with_index do |search_result, search_result_index|
+
+      # save the search result 
+      new_search_result = SearchResult.new(
+        :search_id => search_id,
+        :platform_id => platform_id,
+        :search_result_index => search_result_index,
+        :search_result_title => search_result["title"],
+        :search_result_metadata => search_result["metadata"]
+        )
+
+      new_search_result.save!
+    end
   end
 end
