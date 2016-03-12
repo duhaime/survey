@@ -11,11 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131230903) do
+ActiveRecord::Schema.define(version: 20160312204747) do
+
+  create_table "platforms", force: true do |t|
+    t.text     "platform_name"
+    t.integer  "platform_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "researcher_rankings", force: true do |t|
     t.integer  "search_id"
-    t.integer  "researcher_id"
     t.boolean  "result_1"
     t.boolean  "result_2"
     t.boolean  "result_3"
@@ -28,6 +34,9 @@ ActiveRecord::Schema.define(version: 20160131230903) do
     t.boolean  "result_10"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "platform_id"
+    t.integer  "search_number"
+    t.text     "researcher_email"
   end
 
   create_table "researchers", force: true do |t|
@@ -45,18 +54,17 @@ ActiveRecord::Schema.define(version: 20160131230903) do
     t.integer  "search_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "platform_id"
   end
 
   create_table "search_results", force: true do |t|
     t.integer  "search_id"
-    t.string   "result_title"
-    t.string   "result_journal"
-    t.string   "result_publication_year"
-    t.string   "result_start_page"
-    t.string   "result_end_page"
-    t.string   "result_authors"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "platform_id"
+    t.text     "search_result_title"
+    t.text     "search_result_metadata"
+    t.integer  "search_result_index"
   end
 
   create_table "searches", force: true do |t|
@@ -64,6 +72,7 @@ ActiveRecord::Schema.define(version: 20160131230903) do
     t.string   "search_phrase"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "platform_id"
   end
 
 end
