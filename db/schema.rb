@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160312204747) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "platforms", force: true do |t|
     t.text     "platform_name"
     t.integer  "platform_id"
