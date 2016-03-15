@@ -22,6 +22,9 @@ RailsSurveyApp::Application.configure do
   # Disable Rails's static asset server (Apache or nginx will already do this).
   config.serve_static_assets = true
 
+  # Leverage browser caching on Heroku
+  config.static_cache_control = "public, max-age=2419200"
+
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
