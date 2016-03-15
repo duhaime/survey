@@ -21,12 +21,16 @@
     </div>
   </div>
 </div>
-<div id="progress-bar-container">
-  <div class="container">
-    <div id="progress-bar-label">Survey Progress:</div>
-    <div id="progress-bar"></div>
+
+<!-- Load progress bar on researcher rankings pages -->
+<% if params[:controller] == "researcher_rankings" %>
+  <div id="progress-bar-container">
+    <div class="container">
+      <div id="progress-bar-label">Survey Progress:</div>
+      <div id="progress-bar"></div>
+    </div>
   </div>
-</div>
+<% end %>
 
 <%= yield %>
 
