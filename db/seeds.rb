@@ -17,7 +17,6 @@ def save_search_group_id(search_id, platform_id, search_group_id)
   group id to which we want to assign that search, and save this 
   record in the database
   """
-  print "called save search group id", search_id, platform_id, search_group_id
 
   new_search_group_record = SearchGroup.new(
     :search_group_id => search_group_id,
@@ -117,13 +116,16 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     n_discovery_queries = 2
     n_ebook_queries = 1
 
-    # add questions 0..6 from the platform json to search group id 2
-    # also add questions 7..8 from the discovery json to search group id 2
-    # finally add question 9 from the ebook json to search group id 2
+    """
+    add questions 0..6 from the platform json to search group id 2
+    also add questions 7..8 from the discovery json to search group id 2
+    finally add question 9 from the ebook json to search group id 2
 
     only add a search to a search_group_id number 2
-    # if it has the appropriate platform
-    # and search number values
+    if it has the appropriate platform
+    and search number values
+    """
+
     if platform_names.include? platform_name
       # subtract one from platform queries because of 0 based indexing
       if (0..n_platform_queries-1).to_a.include? search_index
