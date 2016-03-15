@@ -7,6 +7,33 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'json'
 
+####################
+# Helper functions #
+####################
+
+def save_search_group_id(search_id, platform_id, search_group_id)
+  """
+  Read in the search id and platform id for a search, and the search
+  group id to which we want to assign that search, and save this 
+  record in the database
+  """
+  print "called save search group id", search_id, platform_id, search_group_id
+
+  new_search_group_record = SearchGroup.new(
+    :search_group_id => search_group_id,
+    :search_id => search_id,
+    :platform_id => platform_id
+  )
+
+  new_search_group_record.save!
+
+end
+
+
+#################
+# Main Function #
+#################
+
 search_results_files = Dir.glob("db/json_search_results/*.json")
 
 # assign each platform a unique id based on its index
@@ -63,10 +90,61 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     # Save SearchGroup #
     ####################
 
-    # Assign each search to a search group id. Each user will
-    # be assigned a search group id as well, and they will
-    # evaluate all of the search results for the searches in 
-    # their designated search group id.
+    """
+    Assign each search to a search group id. Each user will
+    be assigned a search group id as well, and they will
+    evaluate all of the search results for the searches in 
+    their designated search group id.
+    """
+
+    """
+    We presently wish to assign each user 7 queries from the 
+    platform group (which has 5 levels), 2 queries from 
+    the discovery service platform group (which has 2 levels),
+    and 1 query from the ebooks platform (which has 2 levels). 
+    To do so, add the first 7 queries to user group #2 iff the 
+    current platform name is a platform name, add the next 2 if 
+    the current platform is a discovery platform, and add the next 
+    query thereafter iff the current platform is an ebook platform
+    """ 
+     
+    platform_names = ["proquest_platform", "ebsco_platform", "jstor_platform"]
+    discovery_names = ["proquest_summon", "ebsco_discovery"]
+    ebook_names = ["proquest_ebrary", "ebsco_ebooks"]
+
+    # identify the number of queries to assign to each group
+    n_platform_queries = 7
+    n_discovery_queries = 2
+    n_ebook_queries = 1
+
+    # add questions 0..6 from the platform json to search group id 2
+    # also add questions 7..8 from the discovery json to search group id 2
+    # finally add question 9 from the ebook json to search group id 2
+
+    only add a search to a search_group_id number 2
+    # if it has the appropriate platform
+    # and search number values
+    if platform_names.include? platform_name
+      # subtract one from platform queries because of 0 based indexing
+      if (0..n_platform_queries-1).to_a.include? search_index
+        save_search_group_id(search_id, platform_id, 2)
+      end
+
+    elsif discovery_names.include? platform_name
+      # identify a range that begins with index position = n_platform_queries
+      # and add a number of members to that range based on the number of
+      # queries identified by n_discovery_queries
+      if (n_platform_queries..n_platform_queries+n_discovery_queries-1).to_a.include? search_index
+        save_search_group_id(search_id, platform_id, 2)
+      end
+
+    elsif ebook_names.include? platform_name
+      if (n_platform_queries+n_discovery_queries..n_platform_queries+n_discovery_queries).to_a.include? search_index 
+        save_search_group_id(search_id, platform_id, 2)
+      end
+    end
+   
+    # add everything to search group 1
     search_group_id = 1
 
     new_search_group_record = SearchGroup.new(
