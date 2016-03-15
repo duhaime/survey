@@ -140,6 +140,8 @@ a:after {
   background-color: #EEE;
   height: 40px;
   width: 100%;
+  position: fixed;
+  z-index: 1;
 }
 
 #progress-bar-label {
