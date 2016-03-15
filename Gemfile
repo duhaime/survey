@@ -38,11 +38,14 @@ gem 'font-awesome-rails'
 # add d3.js gem
 gem 'd3-rails'
 
-# add heroku requirement
-gem 'rails_12factor', group: :production
-
 # add postgres gem 
 gem 'pg' 
+
+# add Heroku dependency
+gem 'rails_12factor', group: :production
+
+# gzip assets on Heroku
+gem 'heroku-deflater', group: :production
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
