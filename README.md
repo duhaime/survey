@@ -2,10 +2,19 @@
 
 This repository contains source code for creating a web app that allows users to identify search results that are relevant for a given query. 
 
+###Dependencies
+
+The development and production environments for this app use postgres as their database layer. If you don't have postgres installed on your machine, you'll need to install the database before being able to run the app locally. 
+
+On OSX with brew installed, you can install postgres with `brew install postgres`. The postgres homepage offers [downloads](http://www.postgresql.org/download/) for other operating systems. 
+
 ###Quickstart
 
 <pre><code>git clone https://github.com/duhaime/survey  
 cd survey  
+bundle install 
+# start the postgres db server if it isn't running. E.g. on OSX:  
+# postgres -D /usr/local/var/postgres  
 rake db:drop db:create db:migrate db:seed  
 rails server</code></pre>
 
