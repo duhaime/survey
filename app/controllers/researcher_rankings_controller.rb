@@ -21,7 +21,7 @@ class ResearcherRankingsController < ApplicationController
     @researcher_email = params[:researcher_email] 
     @search_number = params[:search_number]
 
-    # retrieve information on the search we want the researcher to evaluate
+    # retrieve the search group object for the current search
     @current_search_metadata = find_current_search_metadata(@researcher_email, @search_number)
 
     # retrieve the search for this search
@@ -104,7 +104,10 @@ class ResearcherRankingsController < ApplicationController
       """
 
       researcher_search_group_id = Researcher.find_by(email: researcher_email).search_group_id
-      searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id)
+      # sort the searches by their search id so that researchers will evaluate
+      # all of the queries for "donkey kong" before evaluating all of the
+      # results on "mario kart"
+      searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id).order(:search_id)
       return searches_assigned_to_researcher[search_number.to_i]
     end
 
