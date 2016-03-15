@@ -101,12 +101,12 @@ a:after {
     padding: 0;
 }
 
-
 .navbar {
   font-weight: 800;
   font-size: 14px;
   padding-top: 15px;
   padding-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .navbar-inverse {
@@ -133,6 +133,17 @@ a:after {
   color: #FF8670;
   font-size: 22px;
   letter-spacing: 1px;
+}
+
+/****** Progress Bar ******/
+#progress-bar-container {
+  background-color: #EEE;
+  height: 40px;
+  width: 100%;
+}
+
+#progress-bar-label {
+  padding-top: 16px;
 }
 
 /* ==========================================================================
