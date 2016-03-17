@@ -12,12 +12,12 @@
     <div class="col-md-12">
       <div class="graph">
 
-        <% @search_labels.each_with_index do |search_label, search_label_index| %>
-          <% label_id = "label" + (search_label_index + 1).to_s %>
-          <% graph_id = "search" + (search_label_index + 1).to_s %>
+        <% @search_id_and_phrase_array.each do |search_id_and_phrase| %>
+          <% label_id = "label" + search_id_and_phrase[0].to_s %>
+          <% graph_id = "search" + search_id_and_phrase[0].to_s %>
           <div id="<%= label_id %>" class="graph-label">
             <b>Search:</b>
-            <%= search_label %>
+            <%= search_id_and_phrase[1] %>
           </div>
           <div id="<%= graph_id %>" class="search-graph"></div>
         <% end %>
