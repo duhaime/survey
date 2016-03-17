@@ -26,8 +26,12 @@
 <% if params[:controller] == "researcher_rankings" %>
   <div id="progress-bar-container">
     <div class="container">
-      <div id="progress-bar-label">Survey Progress:</div>
-      <div id="progress-bar"></div>
+      <div class="row">
+        <div class="col-sm-12" id="progress-bar-flexbox">
+          <div id="progress-bar-label">Survey Progress:</div>
+          <div id="progress-bar"></div>  
+        </div>
+      </div>
     </div>
   </div>
 <% end %>
