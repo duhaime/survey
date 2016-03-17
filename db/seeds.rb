@@ -11,7 +11,7 @@ require 'json'
 # Helper functions #
 ####################
 
-def save_search_group_id(search_id, platform_id, search_group_id)
+def save_search_group_id(search_id, platform_id, search_group_id, search_phrase)
   """
   Read in the search id and platform id for a search, and the search
   group id to which we want to assign that search, and save this 
@@ -21,7 +21,8 @@ def save_search_group_id(search_id, platform_id, search_group_id)
   new_search_group_record = SearchGroup.new(
     :search_group_id => search_group_id,
     :search_id => search_id,
-    :platform_id => platform_id
+    :platform_id => platform_id,
+    :search_phrase => search_phrase
   )
 
   new_search_group_record.save!
@@ -46,7 +47,7 @@ search_results_files.each_with_index do |search_results_file, platform_index|
   platform_name = search_results_file.split("/")[-1].split("_")[0..1].join("_")
 
   # assign a unique id to the platform (add 1 so platform.id == platform.platform_id)
-  platform_id = platform_index
+  platform_id = platform_index + 1
 
   # save the platform
   new_platform = Platform.new(
@@ -79,7 +80,8 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     new_search = Search.new(
       :search_id => search_id,
       :search_phrase => search_phrase,
-      :platform_id => platform_id
+      :platform_id => platform_id,
+      :search_phrase => search_phrase
     )
 
     new_search.save!
@@ -101,10 +103,7 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     platform group (which has 5 levels), 2 queries from 
     the discovery service platform group (which has 2 levels),
     and 1 query from the ebooks platform (which has 2 levels). 
-    To do so, add the first 7 queries to user group #2 iff the 
-    current platform name is a platform name, add the next 2 if 
-    the current platform is a discovery platform, and add the next 
-    query thereafter iff the current platform is an ebook platform
+    Manually select the queries associated with each platform
     """ 
      
     platform_names = ["proquest_platform", "ebsco_platform", "jstor_platform"]
@@ -126,23 +125,40 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     and search number values
     """
 
+    platform_searches = ["coming of age in India",
+      "phobia",
+      "china electric vehicle",
+      "should religion be taught in school",
+      "how to write critical literature review",
+      "Japanese fashion",
+      "prisoners AND stress management"]
+    discovery_searches = [
+      "Mexico climate change",
+      "Brahms symphony no. 1"]
+    ebook_searches = [
+      "earth global warming"]
+
+
     if platform_names.include? platform_name
       # subtract one from platform queries because of 0 based indexing
-      if (0..n_platform_queries-1).to_a.include? search_index
-        save_search_group_id(search_id, platform_id, 2)
+      #if (0..n_platform_queries-1).to_a.include? search_index
+      if platform_searches.include? search_phrase
+        save_search_group_id(search_id, platform_id, 2, search_phrase)
       end
 
     elsif discovery_names.include? platform_name
       # identify a range that begins with index position = n_platform_queries
       # and add a number of members to that range based on the number of
       # queries identified by n_discovery_queries
-      if (n_platform_queries..n_platform_queries+n_discovery_queries-1).to_a.include? search_index
-        save_search_group_id(search_id, platform_id, 2)
+      #if (n_platform_queries..n_platform_queries+n_discovery_queries-1).to_a.include? search_index
+      if discovery_searches.include? search_phrase
+        save_search_group_id(search_id, platform_id, 2, search_phrase)
       end
 
     elsif ebook_names.include? platform_name
-      if (n_platform_queries+n_discovery_queries..n_platform_queries+n_discovery_queries).to_a.include? search_index 
-        save_search_group_id(search_id, platform_id, 2)
+      #if (n_platform_queries+n_discovery_queries..n_platform_queries+n_discovery_queries).to_a.include? search_index 
+      if ebook_searches.include? search_phrase  
+        save_search_group_id(search_id, platform_id, 2, search_phrase)
       end
     end
    
@@ -152,7 +168,8 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     new_search_group_record = SearchGroup.new(
       :search_group_id => search_group_id,
       :search_id => search_id,
-      :platform_id => platform_id
+      :platform_id => platform_id,
+      :search_phrase => search_phrase
     )
 
     new_search_group_record.save!
