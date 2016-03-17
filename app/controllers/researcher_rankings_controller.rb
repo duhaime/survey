@@ -107,7 +107,7 @@ class ResearcherRankingsController < ApplicationController
       # sort the searches by their search id so that researchers will evaluate
       # all of the queries for "donkey kong" before evaluating all of the
       # results on "mario kart"
-      searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id).order(:search_id)
+      searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id).order(:search_phrase)
       return searches_assigned_to_researcher[search_number.to_i]
     end
 
@@ -160,8 +160,8 @@ class ResearcherRankingsController < ApplicationController
       # 0, while a single member list has length 1
       completed_searches = search_number.to_i + 1
       researcher_search_group_id = Researcher.find_by(email: researcher_email).search_group_id
-      searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id)
-      if completed_searches == searches_assigned_to_researcher
+      n_searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id).length
+      if completed_searches == n_searches_assigned_to_researcher
         return true
       else
         return false
