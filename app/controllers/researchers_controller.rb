@@ -32,14 +32,7 @@ class ResearchersController < ApplicationController
     respond_to do |format|
 
       if @researcher.save
-        format.html { 
-            redirect_to new_researcher_ranking_path(
-              :search_number => 0, 
-              :researcher_email => @researcher.email
-            ), 
-            action: show, 
-            notice: 'Success! Your information has been saved.', status: 301 
-        }
+        format.html { redirect_to controller: 'instruction', action: 'show', email: @researcher.email }
 
         format.json { render action: 'show', status: :created, location: @researcher }
       else
