@@ -1,7 +1,7 @@
 class GraphController < ApplicationController
   def show
     @searches = ResearcherRanking.uniq.pluck(:search_id)
-    @search_labels = retrieve_search_labels(@searches)
+    @search_id_and_phrase_array = create_search_id_search_phrase_array(@searches)
   end
 
   def data
@@ -63,13 +63,13 @@ class GraphController < ApplicationController
     return search_relevancy_json
   end
 
-  def retrieve_search_labels(search_ids)
-    # read in an array of search ids and return search labels for each
+  def create_search_id_search_phrase_array(search_ids)
+    # read in an array of search ids and return an array of arrays
+    # of the form [search_id, serach_phrase]
     search_labels = []
     search_ids.each do |search_id|
-      search_labels << Search.find_by(search_id: search_id).search_phrase
+      search_labels << [ search_id, Search.find_by(search_id: search_id).search_phrase ]
     end
     return search_labels
   end
-
 end
