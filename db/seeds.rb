@@ -125,18 +125,21 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     and search number values
     """
 
-    platform_searches = ["coming of age in India",
+    platform_searches = [
+      "Brahms symphony no. 1",
       "phobia",
       "china electric vehicle",
-      "should religion be taught in school",
-      "how to write critical literature review",
+      "customs law",
+      "earth global warming",
       "Japanese fashion",
       "prisoners AND stress management"]
+    
     discovery_searches = [
       "Mexico climate change",
-      "Brahms symphony no. 1"]
+      "coming of age in India"]
+    
     ebook_searches = [
-      "earth global warming"]
+      "social injustice"]
 
 
     if platform_names.include? platform_name
