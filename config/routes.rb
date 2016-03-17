@@ -3,6 +3,9 @@ RailsSurveyApp::Application.routes.draw do
   resources :searches
   resources :researchers
 
+  # add method to show static instruciton page
+  get "instruction/show"
+
   # add show method of graph controller
   get "graph/show"
 
