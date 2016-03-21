@@ -1,0 +1,92 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag 'bootstrap.min' %>
+  <%= javascript_include_tag 'bootstrap.min' %>
+  <%= stylesheet_link_tag 'home' %>
+  
+  
+  <%= stylesheet_link_tag 'researcher_rankings' %>
+  <%= stylesheet_link_tag 'instruction' %>
+  <%= stylesheet_link_tag 'scaffolds' %>
+<% end %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 instruction">
+      <h2 class="centered">Introduction</h2>
+      <br>
+
+      <div>The goal of this survey is to advance digital search technology. To do so, the survey presents users with a series of web pages, each of which contains a sample search phrase and list of search results formatted like the example below: </div>
+      <br>
+      <br>
+
+      <!-- Sample query results -->
+      <div class="sample-query">
+        <fieldset>
+          <legend>Query: 
+            Brahms symphony no. 1
+          </legend>
+          <p>Please click the checkbox next to each search result that seems relevant for the query above:</p>
+          <ul>
+            <div class="search-result-record">  
+              <input name="researcher_ranking[result_1]" type="hidden" value="0" /><input class="search-result-checkbox" id="researcher_ranking_result_1" name="researcher_ranking[result_1]" type="checkbox" value="1" />
+              <div class="search-result">
+                <b>BRAHMS: Symphony No. 1 / WAGNER: Siegfried Idyll (Klemperer) (1927-28)</b>
+                <br>
+                <div class="search-result-metadata">
+                  by Brahms, Johannes; Wagner, Richard
+                </div>        
+              </div>
+            </div>
+            <br>
+            <div class="search-result-record">  
+              <input name="researcher_ranking[result_2]" type="hidden" value="0" /><input class="search-result-checkbox" id="researcher_ranking_result_2" name="researcher_ranking[result_2]" type="checkbox" value="1" />
+              <div class="search-result">
+                <b>BRAHMS: Symphony No. 1 (Boult) (1954)</b>
+                <br>
+                <div class="search-result-metadata">
+                  by Brahms, Johannes
+                </div>        
+              </div>
+            </div>
+            <br>
+            <div class="search-result-record">  
+              <input name="researcher_ranking[result_3]" type="hidden" value="0" /><input class="search-result-checkbox" id="researcher_ranking_result_3" name="researcher_ranking[result_3]" type="checkbox" value="1" />
+
+              <div class="search-result">
+                <b>Klemperer Legacy (The): Brahms Symphony No. 1, Alto Rhapsody, Op. 53 and Tragic Overture, Op. 81</b>
+                <br>
+                <div class="search-result-metadata">
+                  by Goethe, Johann Wolfgang von; Brahms, Johannes
+                </div>        
+              </div>
+            </div>
+            <br>
+            <div class="actions">
+              <input name="commit" type="submit" value="Submit Responses" />
+            </div>
+          </ul>
+        </fieldset>
+      </div> <!-- .sample-query -->
+
+      <br>
+
+      <div>For each sample search with which you are presented, please click the checkbox next to each search result that seems relevant for the given query. Once you've selected all results you deem relevant for the given search, click the "Submit Responses" button to submit your evaluations and advance to the next page.</div>
+      <br>
+
+      <div>We are interested in your first impressions, so please don't spend too long evaluating the search results for any query. Please also note that you may be given the same query multiple times; this is intentional. Once you are ready to begin, please click the button below.</div>
+      <br>
+      <br>
+
+      <!-- Specify the link_to params in the parent div, and button styles in the child div -->
+      <div class="centered" id="start-button-container">
+        <%= link_to new_researcher_ranking_path(:search_number => 0, :researcher_email => @researcher_email), :action => :show, :method => :get do %>
+          <button type="button" class="btn-lg btn-primary">Start Survey</button>
+        <% end %>
+      </div>
+      <br>
+      <br>
+      <br>
+
+    </div>
+  </div>
+</div>
