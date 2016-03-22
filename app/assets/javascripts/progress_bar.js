@@ -23,7 +23,7 @@ var updateProgressBar = function() {
   }
 
   // identify the total number of searches an individual must complete
-  var totalSeachNumber = 27;
+  var totalSeachNumber = 34;
   var percentCompleted = currentSearchNumber / totalSeachNumber;
 
   d3.select("#progress-bar-graph")
