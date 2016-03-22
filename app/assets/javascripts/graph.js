@@ -29,31 +29,22 @@ function draw(data) {
   ***/
 
   // iterate over the keys of object data
-  $.each(data, function(i,j){
+  $.each(data, function(i, j){
     
-    // i == the search id of interest. Create the plot for this search
-    var searchIndex = i;
-    var idToSelect = "#search" + searchIndex;
+    // i == the search phrase of interest. Create the plot for this search
+    var searchPhrase = i;
+
+    // remove periods and whitespace from the search phrase
+    var idToSelect = "#search" + searchPhrase.replace(".","").split(" ").join("_");
 
     // take only the data for the current search 
-    var plotData = data[searchIndex];
-    var dataKeys = [];
-    var dataVals = [];
-
-    // add the keys and vals to the appropriate arrays
-    $.each(plotData, function(i,j){
-      dataKeys.push(i);
-      dataVals.push(j);
-    });
+    var plotData = data[searchPhrase];
 
     var margin = {top: 0, right: 70, left: 70, bottom: 50};   
     var w = 700 - margin.left - margin.right;
     var h = 400 - margin.top - margin.bottom;
 
-    var color = d3.scale.linear()
-      .domain(d3.extent(dataVals))
-      .interpolate(d3.interpolateHcl)  
-      .range([d3.rgb("#FF9785"), d3.rgb("#8FD5A7")]);
+    var color = d3.scale.category20();
 
     var svg = d3.select(idToSelect).append("svg")
       .attr("width", w + margin.left + margin.right)
@@ -77,7 +68,7 @@ function draw(data) {
     var x = d3.scale.linear()
       .range([15, w-15])
       // to keep things simple for viewers, use 1 based indexing
-      .domain([1, dataVals.length]);
+      .domain([1, 10]);
 
     var xAxis = d3.svg.axis()
       .scale(x);
@@ -143,14 +134,15 @@ function draw(data) {
      * Plot
      ***/
 
-    var circles = svg.selectAll("circle").data(dataVals).enter()
+    var circles = svg.selectAll("circle").data(plotData).enter()
       .append("circle")
         .attr("r", 4)
         .attr("style", "cursor: pointer;")
         // to keep things simple for viewers, use 1-based indexing
-        .attr("cx", function(d, i) {return x(i+1) + margin.left})
-        .attr("cy", function(d, i) {return y(d) + margin.top})
-        .attr("stroke", function(d, i) {return color(d)})
+        // (result index is already 1-based)
+        .attr("cx", function(d, i) {return x(d.result_index) + margin.left})
+        .attr("cy", function(d, i) {return y(d.percent_relevant) + margin.top})
+        .attr("stroke", function(d, i) {return color(d.platform_id)})
         .attr("stroke-width", 2)
         .attr("fill", "#ffffff");
   });
