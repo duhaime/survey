@@ -50,6 +50,6 @@ class ResearchersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def researcher_params
-      params.require(:researcher).permit(:email, :name, :university, :position, :search_group_id)
+      params.require(:researcher).permit(:email, :name, :university, :position, :search_group_id, :frequency_of_database_usage, :do_you_know_proquest, :do_you_like_proquest)
     end
 end
