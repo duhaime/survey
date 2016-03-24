@@ -1,8 +1,8 @@
 class GraphController < ApplicationController
   def show
-    @searches = ResearcherRanking.uniq.pluck(:search_id)
-    @search_id_and_phrase_array = create_search_id_search_phrase_array(@searches)
+    @search_phrase_array = ResearcherRanking.uniq.pluck(:search_phrase)
   end
+
 
   def data
     respond_to do |format|
@@ -12,64 +12,121 @@ class GraphController < ApplicationController
     end
   end
 
+
   def retrieve_json()
+    """
+    For each search phrase, find all platforms for which that search phrase
+    is relevant. Then, for each platform, find the percent of researchers who
+    deem that platform's top 10 hits for that search phrase relevant. 
 
-    # Determine the percent of researchers who deem each response
-    # to each query 'relevant', and return json that captures this
-    # data
-    search_relevancy_json = {}
-    
-    # populate an array of all unique search ids, and pass each into k
-    ResearcherRanking.uniq.pluck(:search_id).each do |search_id|
+    the json served will be of form:
+      json = {
 
-      # retrieve the search phrase for this search_id
-      search_phrase = Search.find_by(search_id: search_id).search_phrase
+        // there is one json key for all search results
+        'search_results': {
 
-      # add the current search id as a key in the json
-      search_relevancy_json[search_id] = {}
+          // each search is a key in the search_results dict
+          'material world': {
+            
+            // each key is a result index
+            1: [
+                {'platform_id': 1,
+                  'percent_relevant: .8
+                },
+                {}, ...
+                {}
+              ],
+            2: ...
+          },
+            
+          'material girl': { 1:{}, 2:{}, ...10:{} }
 
-      # retrieve an array of all rankings for the current value of search_id
-      key_rankings = ResearcherRanking.where(search_id: search_id)
+      // there is another json key for the platform id and name array
+      'platform_id_and_name_array': 
 
-      # given those rankings, find all unique result values
-      result_keys = []
+        [ [platform_id, platform_name], [] ]
 
-      # loop over all attributes of the first member of result_keys
-      key_rankings.first.attributes.each do |attribute|
+      }
+    """
+    # create the json to be served to the client at /graph/data.json
+    search_relevancy_json = {
+      "platform_id_and_name_array" => [],
+      "search_results" => {}}
 
-        # a is an array of form ["key", value]
-        # if "result_" is in the key, add the key to result_keys
-        if attribute[0].to_s.include? 'result_'
-          unless attribute[1].nil?
-            result_keys << attribute[0]
+    #####################################
+    # Update platform id and name array #
+    #####################################
+
+    for platform_record in Platform.all
+      search_relevancy_json["platform_id_and_name_array"] << {
+        "platform_id" => platform_record.platform_id, 
+        "platform_name" => platform_record.platform_name
+      }
+    end
+
+    ##############################
+    # Update search results json #
+    ##############################
+
+    # iterate over all search phrases for which we have evaluations
+    ResearcherRanking.uniq.pluck(:search_phrase).each do |search_phrase|
+
+      # add the current search phrase as a key in the json to be served
+      search_relevancy_json["search_results"][search_phrase] = []
+
+      researcher_rankings_for_current_search = ResearcherRanking.where(search_phrase: search_phrase)
+
+      # find all platforms for which we have responses to this search phrase
+      researcher_rankings_for_current_search.uniq.pluck(:platform_id).each do |platform_id|
+
+        platform_json = {}
+
+        # retrieve the researcher rankings for the given search_phrase and platform_id combination
+        relevant_rankings = researcher_rankings_for_current_search.where(platform_id: platform_id)
+
+        # populate a list of all result_* keys in the given researcher ranking objects
+        result_keys = []
+
+        # loop over all attributes of the first member of relevant_rankings
+        relevant_rankings.first.attributes.each do |attribute|
+
+          # a is an array of form ["key", value]
+          # if "result_" is in the key, add the key to result_keys
+          if attribute[0].to_s.include? 'result_'
+            unless attribute[1].nil?
+              result_keys << attribute[0]
+            end
           end
         end
-      end
 
-      # given the non-nil keys for the current search, compute the number
-      # of true and false responses for each search response for the search
-      relevant_searches = ResearcherRanking.where(search_id: search_id)
-      result_keys.each do |result_key|
+        """
+        given the keys corresponding to result options for the current 
+        search, compute the number of true and false responses for 
+        each search response for the search
+        """
 
-        n_true = relevant_searches.where(result_key.parameterize.underscore.to_sym => true).length
-        n_false = relevant_searches.where(result_key.parameterize.underscore.to_sym => false).length
-        percent_true = n_true.fdiv(n_true + n_false)
+        result_keys.each do |result_key|
 
-        # add the result_key and percent_true to the appropriate search_id
-        # value in the json
-        search_relevancy_json[search_id][result_key] = percent_true
+          n_true = relevant_rankings.where(result_key.parameterize.underscore.to_sym => true).length
+          n_false = relevant_rankings.where(result_key.parameterize.underscore.to_sym => false).length
+          percent_true = n_true.fdiv(n_true + n_false)
+
+          # the result_key object is a string of form: 'result_1'
+          # create an object that retains only the integer portion of this
+          # string
+          result_number = result_key.split("_")[1].to_i
+
+          # add a hash containing platform_id, result_index, and a
+          # percent relevant score
+          search_relevancy_json["search_results"][search_phrase] << {
+            "result_index" => result_number,
+            "platform_id" => platform_id, 
+            "percent_relevant" => percent_true
+          }
+
+        end
       end
     end
     return search_relevancy_json
-  end
-
-  def create_search_id_search_phrase_array(search_ids)
-    # read in an array of search ids and return an array of arrays
-    # of the form [search_id, serach_phrase]
-    search_labels = []
-    search_ids.each do |search_id|
-      search_labels << [ search_id, Search.find_by(search_id: search_id).search_phrase ]
-    end
-    return search_labels
   end
 end
