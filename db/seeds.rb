@@ -106,7 +106,7 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     Manually select the queries associated with each platform
     """ 
      
-    platform_names = ["proquest_platform", "ebsco_platform", "jstor_platform"]
+    platform_names = ["proquest_platform", "proquest_solr", "ebsco_platform", "jstor_platform"]
     discovery_names = ["proquest_summon", "ebsco_discovery"]
     ebook_names = ["proquest_ebrary", "ebsco_ebooks"]
 
@@ -197,6 +197,7 @@ search_results_files.each_with_index do |search_results_file, platform_index|
       # save the search result 
       new_search_result = SearchResult.new(
         :search_id => search_id,
+        :search_phrase => search_phrase,
         :platform_id => platform_id,
         :search_result_index => search_result_index,
         :search_result_title => search_result["title"],
