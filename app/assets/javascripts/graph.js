@@ -28,31 +28,40 @@ function draw(data) {
   *
   ***/
 
-  // iterate over the keys of object data
-  $.each(data, function(i, j){
+  // create a counter to keep track of passes through loop
+  // set the counter to -1 so that on the first pass we'll
+  // establish 0-based indexing
+  var counter = -1;
+
+  // iterate over the search results data 
+  $.each(data["search_results"], function(i, j){
     
+    // increment the counter to achieve 0-based indexing counting
+    counter += 1;
+
     // i == the search phrase of interest. Create the plot for this search
-    var searchPhrase = i;
+    var search_phrase = i;
 
     // remove periods and whitespace from the search phrase
-    var idToSelect = "#search" + searchPhrase.replace(".","").split(" ").join("_");
+    var id_to_select = "#search_" + search_phrase.replace(".","").split(" ").join("_");
 
     // take only the data for the current search 
-    var plotData = data[searchPhrase];
+    var plot_data = data["search_results"][search_phrase];
 
-    var margin = {top: 0, right: 70, left: 70, bottom: 50};   
-    var w = 700 - margin.left - margin.right;
+    var margin = {top: 0, right: 270, left: 70, bottom: 50};   
+    var w = 900 - margin.left - margin.right;
     var h = 400 - margin.top - margin.bottom;
 
-    var color = d3.scale.category20();
+    var color = d3.scale.category20()
+      .domain(d3.range(data["platform_id_and_name_array"].length));
 
-    var svg = d3.select(idToSelect).append("svg")
+    var svg = d3.select(id_to_select).append("svg")
       .attr("width", w + margin.left + margin.right)
       .attr("height", h + margin.top + margin.bottom);
  
     // add rectangle in which plot will be created 
     svg.append("rect")
-      .attr("id", "plotBox")
+      .attr("class", "plotBox")
       .attr("x", margin.left)
       .attr("y", margin.top)
       .attr("height", h)
@@ -134,7 +143,7 @@ function draw(data) {
      * Plot
      ***/
 
-    var circles = svg.selectAll("circle").data(plotData).enter()
+    var circles = svg.selectAll("circle").data(plot_data).enter()
       .append("circle")
         .attr("r", 4)
         .attr("style", "cursor: pointer;")
@@ -145,6 +154,56 @@ function draw(data) {
         .attr("stroke", function(d, i) {return color(d.platform_id)})
         .attr("stroke-width", 2)
         .attr("fill", "#ffffff");
+
+    /***
+     * Legend 
+     ***/
+
+    // retrieve platform_id_and_name array served by graph controller
+    var platform_id_and_name = data["platform_id_and_name_array"];
+
+    // add svg on which to build the legend
+    var legend = d3.select(id_to_select).select("svg").append("svg:svg")
+      // id_to_select is prefaced with "#",
+      // but the .attr("id",'') method will append a #, 
+      // so remove the # from the id_to_select string
+      .attr("id", id_to_select.replace("#","") + "_legend")
+      .attr("height", 200)
+      .attr("width", 200)
+
+      // SET X DYNAMICALLY AND FIGURE OUT COLOR INCONSISTENCY
+      .attr("x", 700)
+      .attr("y", 0);
+
+    legend.selectAll(".legendDiv").data(platform_id_and_name).enter()
+      .append('g') 
+      .attr("class", "legend")
+      .each(function(d, i) {
+
+        console.log(d, color(d.platform_id));
+
+        // select the g div just appended to the plot
+        var g = d3.select(this);
+        g.append("svg:circle")
+          .attr("cx", 5)
+          .attr("cy", 20*i+15)
+          .attr("r", 4)
+          .style("stroke", function(d) {return color(d.platform_id);})
+          .style("fill", "#ffffff")
+          .attr("stroke-width", 2)
+          .attr("class","legendCircle");
+          
+        g.append("text")
+          .attr("x", 12)
+          .attr("y", 20*i + 20)
+          .attr("height",20)
+          .attr("width",60)
+          .style("fill", "#000000")
+          .style("font-size", "12")
+          .text(function(d) {return d.platform_name;});
+      });
+
+
   });
 };
  
