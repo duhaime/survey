@@ -7,6 +7,33 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'json'
 
+####################
+# Helper functions #
+####################
+
+def save_search_group_id(search_id, platform_id, search_group_id, search_phrase)
+  """
+  Read in the search id and platform id for a search, and the search
+  group id to which we want to assign that search, and save this 
+  record in the database
+  """
+
+  new_search_group_record = SearchGroup.new(
+    :search_group_id => search_group_id,
+    :search_id => search_id,
+    :platform_id => platform_id,
+    :search_phrase => search_phrase
+  )
+
+  new_search_group_record.save!
+
+end
+
+
+#################
+# Main Function #
+#################
+
 search_results_files = Dir.glob("db/json_search_results/*.json")
 
 # assign each platform a unique id based on its index
@@ -20,7 +47,7 @@ search_results_files.each_with_index do |search_results_file, platform_index|
   platform_name = search_results_file.split("/")[-1].split("_")[0..1].join("_")
 
   # assign a unique id to the platform (add 1 so platform.id == platform.platform_id)
-  platform_id = platform_index
+  platform_id = platform_index + 1
 
   # save the platform
   new_platform = Platform.new(
@@ -53,7 +80,8 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     new_search = Search.new(
       :search_id => search_id,
       :search_phrase => search_phrase,
-      :platform_id => platform_id
+      :platform_id => platform_id,
+      :search_phrase => search_phrase
     )
 
     new_search.save!
@@ -63,16 +91,88 @@ search_results_files.each_with_index do |search_results_file, platform_index|
     # Save SearchGroup #
     ####################
 
-    # Assign each search to a search group id. Each user will
-    # be assigned a search group id as well, and they will
-    # evaluate all of the search results for the searches in 
-    # their designated search group id.
+    """
+    Assign each search to a search group id. Each user will
+    be assigned a search group id as well, and they will
+    evaluate all of the search results for the searches in 
+    their designated search group id.
+    """
+
+    """
+    We presently wish to assign each user 7 queries from the 
+    platform group (which has 5 levels), 2 queries from 
+    the discovery service platform group (which has 2 levels),
+    and 1 query from the ebooks platform (which has 2 levels). 
+    Manually select the queries associated with each platform
+    """ 
+     
+    platform_names = ["proquest_platform", "proquest_solr", "ebsco_platform", "jstor_platform"]
+    discovery_names = ["proquest_summon", "ebsco_discovery"]
+    ebook_names = ["proquest_ebrary", "ebsco_ebooks"]
+
+    # identify the number of queries to assign to each group
+    n_platform_queries = 7
+    n_discovery_queries = 2
+    n_ebook_queries = 1
+
+    """
+    add questions 0..6 from the platform json to search group id 2
+    also add questions 7..8 from the discovery json to search group id 2
+    finally add question 9 from the ebook json to search group id 2
+
+    only add a search to a search_group_id number 2
+    if it has the appropriate platform
+    and search number values
+    """
+
+    platform_searches = [
+      "Brahms symphony no. 1",
+      "phobia",
+      "china electric vehicle",
+      "customs law",
+      "earth global warming",
+      "Japanese fashion",
+      "prisoners AND stress management"]
+    
+    discovery_searches = [
+      "Mexico climate change",
+      "coming of age in India"]
+    
+    ebook_searches = [
+      "social injustice"]
+
+
+    if platform_names.include? platform_name
+      # subtract one from platform queries because of 0 based indexing
+      #if (0..n_platform_queries-1).to_a.include? search_index
+      if platform_searches.include? search_phrase
+        save_search_group_id(search_id, platform_id, 2, search_phrase)
+      end
+
+    elsif discovery_names.include? platform_name
+      # identify a range that begins with index position = n_platform_queries
+      # and add a number of members to that range based on the number of
+      # queries identified by n_discovery_queries
+      #if (n_platform_queries..n_platform_queries+n_discovery_queries-1).to_a.include? search_index
+      if discovery_searches.include? search_phrase
+        save_search_group_id(search_id, platform_id, 2, search_phrase)
+      end
+
+    elsif ebook_names.include? platform_name
+      #if (n_platform_queries+n_discovery_queries..n_platform_queries+n_discovery_queries).to_a.include? search_index 
+      if ebook_searches.include? search_phrase  
+        save_search_group_id(search_id, platform_id, 2, search_phrase)
+      end
+    end
+   
+    # add everything to search group 1
     search_group_id = 1
 
     new_search_group_record = SearchGroup.new(
       :search_group_id => search_group_id,
       :search_id => search_id,
-      :platform_id => platform_id
+      :platform_id => platform_id,
+      :search_phrase => search_phrase
     )
 
     new_search_group_record.save!
@@ -97,6 +197,7 @@ search_results_files.each_with_index do |search_results_file, platform_index|
       # save the search result 
       new_search_result = SearchResult.new(
         :search_id => search_id,
+        :search_phrase => search_phrase,
         :platform_id => platform_id,
         :search_result_index => search_result_index,
         :search_result_title => search_result["title"],

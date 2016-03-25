@@ -6,3 +6,12 @@
 	margin-top: 5%;
 	margin-left: 40%;
 }
+
+/* override bootstrap styling on form element spacing */
+input, select {
+  margin-bottom: 14px !important;
+}
+
+label {
+  margin-bottom: 2px !important;
+}

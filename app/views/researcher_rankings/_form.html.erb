@@ -2,7 +2,7 @@
   <legend>Query: 
     <%= @search_phrase %>
   </legend>
-  <p>Please select the results that are relevant for the query above:</p>
+  <p>Please click the checkbox next to each search result that seems relevant for the query above:</p>
   <ul>
 
     <%= form_for(@researcher_ranking) do |f| %>
@@ -20,7 +20,7 @@
 
       <!-- catch the following values from the get params and send with the post -->
       <%= f.text_field :researcher_email, :value => @researcher_email, :class => 'hidden' %>
-      <%= f.number_field :search_id, :value => @search_id, :class => 'hidden' %>
+      <%= f.text_field :search_phrase, :value => @search_phrase, :class => 'hidden' %>
       <%= f.number_field :platform_id, :value => @platform_id, :class => 'hidden' %>
       <%= f.number_field :search_number, :value => @search_number, :class => 'hidden' %>
 

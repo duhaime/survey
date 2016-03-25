@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160312204747) do
+ActiveRecord::Schema.define(version: 20160321190004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 20160312204747) do
   end
 
   create_table "researcher_rankings", force: true do |t|
-    t.integer  "search_id"
     t.boolean  "result_1"
     t.boolean  "result_2"
     t.boolean  "result_3"
@@ -40,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160312204747) do
     t.integer  "platform_id"
     t.integer  "search_number"
     t.text     "researcher_email"
+    t.string   "search_phrase"
   end
 
   create_table "researchers", force: true do |t|
@@ -50,6 +50,9 @@ ActiveRecord::Schema.define(version: 20160312204747) do
     t.integer  "search_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "frequency_of_database_usage"
+    t.string   "do_you_know_proquest"
+    t.string   "do_you_like_proquest"
   end
 
   create_table "search_groups", force: true do |t|
@@ -58,6 +61,7 @@ ActiveRecord::Schema.define(version: 20160312204747) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "platform_id"
+    t.text     "search_phrase"
   end
 
   create_table "search_results", force: true do |t|
@@ -68,6 +72,7 @@ ActiveRecord::Schema.define(version: 20160312204747) do
     t.text     "search_result_title"
     t.text     "search_result_metadata"
     t.integer  "search_result_index"
+    t.string   "search_phrase"
   end
 
   create_table "searches", force: true do |t|

@@ -21,7 +21,7 @@ class ResearcherRankingsController < ApplicationController
     @researcher_email = params[:researcher_email] 
     @search_number = params[:search_number]
 
-    # retrieve information on the search we want the researcher to evaluate
+    # retrieve the search group object for the current search
     @current_search_metadata = find_current_search_metadata(@researcher_email, @search_number)
 
     # retrieve the search for this search
@@ -33,8 +33,8 @@ class ResearcherRankingsController < ApplicationController
     # retrieve the search results for the current search
     @search_results = find_current_search_results(@current_search_metadata)
 
-    # also pass id values for the current search, and platform
-    @search_id = @current_search.search_id
+    # also pass the current search phrase and platform id
+    @search_phrase = @current_search.search_phrase
     @platform_id = @current_search.platform_id
   end
 
@@ -46,7 +46,7 @@ class ResearcherRankingsController < ApplicationController
     
     # retrieve id values from the autofilled form params
     @researcher_email = researcher_ranking_params["researcher_email"]
-    @search_id = researcher_ranking_params["search_id"]
+    @search_id = researcher_ranking_params["search_phrase"]
     @platform_id = researcher_ranking_params["platform_id"]
     @search_number = researcher_ranking_params["search_number"]
 
@@ -91,7 +91,7 @@ class ResearcherRankingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def researcher_ranking_params
-      params.require(:researcher_ranking).permit(:search_id, :platform_id, :researcher_email, :search_number, :result_1, :result_2, :result_3, :result_4, :result_5, :result_6, :result_7, :result_8, :result_9, :result_10)
+      params.require(:researcher_ranking).permit(:search_phrase, :platform_id, :researcher_email, :search_number, :result_1, :result_2, :result_3, :result_4, :result_5, :result_6, :result_7, :result_8, :result_9, :result_10)
     end
 
 
@@ -104,7 +104,10 @@ class ResearcherRankingsController < ApplicationController
       """
 
       researcher_search_group_id = Researcher.find_by(email: researcher_email).search_group_id
-      searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id)
+      # sort the searches by their search id so that researchers will evaluate
+      # all of the queries for "donkey kong" before evaluating all of the
+      # results on "mario kart"
+      searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id).order(:search_phrase)
       return searches_assigned_to_researcher[search_number.to_i]
     end
 
@@ -117,11 +120,11 @@ class ResearcherRankingsController < ApplicationController
       """
 
       # find the current search id and platform 
-      current_search_id = current_search_metadata.search_id
+      current_search_phrase = current_search_metadata.search_phrase
       current_search_platform_id = current_search_metadata.platform_id
 
       # find all searches with the current search id
-      candidate_searches = Search.where(search_id: current_search_id)
+      candidate_searches = Search.where(search_phrase: current_search_phrase)
 
       # of those searches, return the one with the given platform id
       return candidate_searches.where(platform_id: current_search_platform_id).take
@@ -136,11 +139,11 @@ class ResearcherRankingsController < ApplicationController
       """
 
       # find the current search id and platform 
-      current_search_id = current_search_metadata.search_id
+      current_search_phrase = current_search_metadata.search_phrase
       current_search_platform_id = current_search_metadata.platform_id
 
       # return all search results for this search
-      candidate_search_results = SearchResult.where(search_id: current_search_id)
+      candidate_search_results = SearchResult.where(search_phrase: current_search_phrase)
 
       return candidate_search_results.where(platform_id: current_search_platform_id)
     end
@@ -157,8 +160,8 @@ class ResearcherRankingsController < ApplicationController
       # 0, while a single member list has length 1
       completed_searches = search_number.to_i + 1
       researcher_search_group_id = Researcher.find_by(email: researcher_email).search_group_id
-      searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id)
-      if completed_searches == searches_assigned_to_researcher
+      n_searches_assigned_to_researcher = SearchGroup.where(search_group_id: researcher_search_group_id).length
+      if completed_searches == n_searches_assigned_to_researcher
         return true
       else
         return false
