@@ -12,28 +12,47 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
     <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
+
+  <div class="field">
+    <%= f.label :email %><br>
+    <%= f.text_field :email %>
+  </div>
+
   <div class="field">
     <%= f.label :university %><br>
     <%= f.text_field :university %>
   </div>
+
   <div class="field">
     <%= f.label :position %><br>
-    <%= f.select :position, ["Undergraduate Student", "Graduate Student", "Librarian", "Professor"] %>
+    <%= f.select :position, ["Undergraduate Student", "Graduate Student", "Librarian", "Professor", "Professional Researcher"] %>
   </div>
+
+  <div class="field">
+    <%= f.label :frequency_of_database_usage, "How often do you use library databases?" %><br>
+    <%= f.select :frequency_of_database_usage, ["Roughly once a month", "Roughly once a week", "Rougly every day"] %>
+  </div>
+
+  <div class="field">
+    <%= f.label :do_you_know_proquest, "Do you use ProQuest databases?" %><br>
+    <%= f.select :do_you_know_proquest, ["Yes", "No"] %>
+  </div>
+
+  <div class="field">
+    <%= f.label :do_you_like_proquest, "Do you like using ProQuest databases?" %><br>
+    <%= f.select :do_you_like_proquest, ["Yes", "No"] %>
+  </div>
+
   <!--
   <div class="field">
     <%= f.label :search_group_id %><br>
     <%= f.number_field :search_group_id %>
   </div>
   -->
-  <br>
+
   <div class="actions">
     <%= f.submit "Submit" %>
   </div>
