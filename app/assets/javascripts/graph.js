@@ -53,6 +53,8 @@ function draw(data) {
     var h = 400 - margin.top - margin.bottom;
 
     var color = d3.scale.category20()
+      // set a definite domain to ensure colors are mapped to 
+      // platform ids consistently
       .domain(d3.range(data["platform_id_and_name_array"].length));
 
     var svg = d3.select(id_to_select).append("svg")
@@ -91,7 +93,7 @@ function draw(data) {
     svg.append("text")
       .attr("class", "x label")
       .attr("text-anchor", "end")
-      .attr("x", (w+margin.left+margin.right)/2 + 45)
+      .attr("x", (w+margin.left+margin.right)/2 - 45)
       .attr("y", h + margin.top + margin.bottom - 3)
       .style("font-size", "12.5")
       .style("font-weight", "normal")
@@ -172,15 +174,13 @@ function draw(data) {
       .attr("width", 200)
 
       // SET X DYNAMICALLY AND FIGURE OUT COLOR INCONSISTENCY
-      .attr("x", 700)
+      .attr("x", 660)
       .attr("y", 0);
 
     legend.selectAll(".legendDiv").data(platform_id_and_name).enter()
       .append('g') 
       .attr("class", "legend")
       .each(function(d, i) {
-
-        console.log(d, color(d.platform_id));
 
         // select the g div just appended to the plot
         var g = d3.select(this);
